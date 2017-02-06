@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -27,6 +29,7 @@ func init() {
 		log.Fatal(err)
 		return
 	}
+	_ = kv
 }
 
 func mock(w http.ResponseWriter, r *http.Request) {
@@ -34,18 +37,25 @@ func mock(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminMocks(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
+	var mock Mock
+	if r.Method == "POST" {
+		decoder := json.NewDecoder(r.Body)
+		defer r.Body.Close()
+		err := decoder.Decode(&mock)
+		if err != nil {
+			panic(err)
+		}
+		//@todo  profile
+		content, err := json.Marshal(mock)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(content)
+		err = kv.Put([]byte(mock.Url), content)
 
-	} else if r.Method == "POST" {
-
-	}
-}
-
-func adminMock(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
-	case "UPDATE":
-	case "DELETE":
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -56,7 +66,6 @@ func main() {
 
 	adminServer := mux.NewRouter()
 	adminServer.HandleFunc("/mocks/", adminMocks)
-	adminServer.HandleFunc("/mocks/{sum}", adminMock)
 
 	go func() {
 		log.Fatal(http.ListenAndServe(":8090", mockServer))
