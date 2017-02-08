@@ -13,3 +13,8 @@ curl '127.0.0.1:8089/mocks/' -d '{"url":"http://www.baidu.com:8090/","body":"tes
 echo "127.0.0.1 www.baidu.com" >> /etc/hosts
 curl 'http://www.baidu.com:8090/'  -I 
 ```
+
+#build
+```sh
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
+```
