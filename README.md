@@ -6,6 +6,13 @@ usage of ./mock:
 --serverport string   server port (default "80")
 ```
 
+```sh
+docker run -ti -p 80:80 -p 8089:8089 wanghaibo/httpmock
+curl '127.0.0.1:8089/mocks/' -d '{"url":"http://www.baidu.com/","body":"test","headers":{"a":"b", "c":"d", "Content-Type":"Text/Html2", "Wanghaibo":"haha"}}'
+echo "127.0.0.1 www.baidu.com" >> /etc/hosts
+curl 'http://www.baidu.com/'  -I 
+```
+
 #usage 
 ```sh
 ./mock --datapath ./test --severport 8090
