@@ -1,9 +1,9 @@
 # run
 ```sh
 usage of ./mock:
---adminport string    admin port (default "8091")
+--adminport string    admin port (default "8089")
 --datapath string     path to store mockinfo
---serverport string   server port (default "8090")
+--serverport string   server port (default "80")
 ```
 
 #usage 
